@@ -63,5 +63,5 @@ app.post('/callback', upload.none(), (req, res) => {
 });
 
 app.listen(port, '0.0.0.0', () => {
-    console.log(`Сервер запущен и слушает порт ${port}`);
+    console.log(`Сервер заущен и слушает порт ${port}`);
 });
