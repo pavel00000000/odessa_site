@@ -26,6 +26,12 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+
+app.get('/privacy.html', (req, res) => {
+    console.log('GET /privacy.html requested');
+    res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
+});
+
 // Форма заявки
 app.post('/submit', upload.none(), async (req, res) => {
     console.log('Headers:', req.headers);
