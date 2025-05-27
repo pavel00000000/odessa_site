@@ -1,6 +1,3 @@
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const callIcon = document.querySelector('.call-icon');
     const modalOverlay = document.querySelector('.modal-overlay');
@@ -21,9 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Обработка клика по overlay для закрытия модального окна
     if (modalOverlay) {
-        modalOverlay.addEventListener('click', () => {
-            toggleModal();
-        });
+        modalOverlay.addEventListener('click', toggleModal);
     }
 
     // Предотвращение закрытия при клике внутри .modal-content
@@ -33,15 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Обработка отправки формы обратного звонка
+    // Обработка формы обратного звонка
     if (modalForm) {
         modalForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
-            // Собираем данные формы
             const formData = new FormData(modalForm);
             const formDataObj = Object.fromEntries(formData);
-            console.log('Отправляемые данные (modal-form):', formDataObj); // Отладка
+            console.log('Отправляемые данные (modal-form):', formDataObj);
 
             // Валидация полей
             const { name, phone } = formDataObj;
@@ -59,32 +52,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Проверка на лишние поля
-            const validFields = ['name', 'phone'];
-            const receivedFields = Object.keys(formDataObj);
-            const extraFields = receivedFields.filter(field => !validFields.includes(field));
-            if (extraFields.length > 0) {
-                console.warn('Лишние поля в modal-form:', extraFields);
-            }
-
             try {
-                const response = await fetch('https://odessa-site.onrender.com', {
+                const response = await fetch('/callback', {
                     method: 'POST',
                     body: formData
                 });
                 const result = await response.json();
-                console.log('Ответ сервера (modal-form):', result); // Отладка
+                console.log('Ответ сервера (modal-form):', result);
 
                 if (response.ok) {
                     alert(result.message || 'Запрос на звонок отправлен!');
                     modalForm.reset();
                     toggleModal();
                 } else {
-                    alert(result.error || 'Ошибка при отправке запроса. Проверьте поля формы.');
+                    alert(result.error || 'Ошибка при отправке запроса.');
                     console.error('Ошибка сервера:', result);
                 }
             } catch (error) {
-                alert('Ошибка сети. Проверьте, запущен ли сервер.');
+                alert('Ошибка сети. Проверьте соединение.');
                 console.error('Ошибка сети:', error);
             }
         });
@@ -105,13 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const formData = new FormData(contactForm);
             const formDataObj = Object.fromEntries(formData);
             console.log('Отправляемые данные (contact-form):', formDataObj);
 
-            const age = formDataObj.age;
-            if (!age || isNaN(parseInt(age)) || parseInt(age) < 16 || parseInt(age) > 100) {
+            const age = parseInt(formDataObj.age);
+            if (!age || isNaN(age) || age < 16 || age > 100) {
                 alert('Ошибка: Возраст должен быть числом от 16 до 100.');
                 return;
             }
@@ -121,8 +105,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const phoneRegex = /^\+380[0-9]{9}$/;
+            if (!phoneRegex.test(formDataObj.phone)) {
+                alert('Ошибка: Неверный формат телефона. Используйте +380XXXXXXXXX.');
+                return;
+            }
+
             try {
-                const response = await fetch('https://odessa-site.onrender.com', {
+                const response = await fetch('/submit', {
                     method: 'POST',
                     body: formData
                 });
@@ -133,18 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     alert(result.message || 'Заявка успешно отправлена!');
                     contactForm.reset();
                 } else {
-                    alert(result.error || 'Ошибка при отправке заявки. Проверьте поля формы.');
+                    alert(result.error || 'Ошибка при отправке заявки.');
                     console.error('Ошибка сервера:', result);
                 }
             } catch (error) {
-                alert('Ошибка сети. Проверьте, запущен ли сервер.');
+                alert('Ошибка сети. Проверьте соединение.');
                 console.error('Ошибка сети:', error);
             }
         });
     }
 });
 
-// Открытие/закрытие модального окна
 function toggleModal() {
     document.body.classList.toggle('modal-open');
 }

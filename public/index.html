@@ -127,19 +127,34 @@
         </div>
     </section>
 
-    <!-- Форма заявки -->
-    <section id="contact" class="contact">
-        <div class="contact-container">
-            <h2>Оставить заявку</h2>
-           <form id="contact-form" action="/submit" method="POST">
-    <input type="text" name="name" placeholder="Имя" required>
-    <input type="number" name="age" placeholder="Возраст" required>
-    <input type="tel" name="phone" placeholder="Телефон +380" required pattern="\+380[0-9]{9}">
-    <input type="text" name="city" placeholder="Город" required>
-    <button type="submit" class="btn">Отправить заявку</button>
-            </form>
-        </div>
-    </section>
+  <!-- Форма заявки -->
+<section id="contact" class="contact">
+    <div class="contact-container">
+        <h2>Оставить заявку</h2>
+        <form id="contact-form" action="/submit" method="POST">
+            <input type="text" name="name" placeholder="Имя" required>
+            <input type="number" name="age" placeholder="Возраст" required>
+            <input type="tel" name="phone" placeholder="Телефон +380" required pattern="\+380[0-9]{9}">
+            <input type="text" name="city" placeholder="Город" required>
+            <button type="submit" class="btn">Отправить заявку</button>
+        </form>
+    </div>
+</section>
+
+<!-- Модальное окно с формой обратного звонка -->
+<div class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <span class="modal-close" onclick="toggleModal()">×</span>
+        <h3>Заказать звонок</h3>
+        <p>Введите свои данные, и мы перезвоним в течение 30 минут</p>
+        <form id="modal-form" action="/callback" method="POST">
+            <input type="text" name="name" placeholder="Имя" required>
+            <input type="tel" name="phone" placeholder="Телефон +380" required pattern="\+380[0-9]{9}">
+            <button type="submit" class="btn">Отправить</button>
+        </form>
+    </div>
+</div>
 
     <!-- Футер -->
     <footer>
@@ -159,16 +174,16 @@
         </div>
     </div>
 
-  <!-- Модальное окно -->
+  <!-- Модальное окно с формой обратного звонка -->
 <div class="modal">
     <div class="modal-overlay"></div>
     <div class="modal-content">
         <span class="modal-close" onclick="toggleModal()">×</span>
         <h3>Заказать звонок</h3>
-        <p>Введите свои данные, и мы перезвоним вам в течение 30 минут</p>
+        <p>Введите свои данные, и мы перезвоним в течение 30 минут</p>
         <form id="modal-form" action="/callback" method="POST">
-            <input type="text" name="name" placeholder="Ваше имя" required>
-            <input type="tel" name="phone" placeholder="Телефон +380" required pattern="\+380[0-9]{9}" autocomplete="tel">
+            <input type="text" name="name" placeholder="Имя" required>
+            <input type="tel" name="phone" placeholder="Телефон +380" required pattern="\+380[0-9]{9}">
             <button type="submit" class="btn">Отправить</button>
         </form>
     </div>
