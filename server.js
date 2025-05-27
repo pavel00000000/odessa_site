@@ -62,6 +62,6 @@ app.post('/callback', upload.none(), (req, res) => {
         });
 });
 
-app.listen(port, () => {
-    console.log(`Сервер запущен на http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Сервер запущен и слушает порт ${port}`);
 });
