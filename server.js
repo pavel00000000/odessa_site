@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 });
 
 // Форма заявки
-app.post('/submit', upload.none(), (req, res) => {
+app.post('/submit', upload.none(), async (req, res) => {
     console.log('Headers:', req.headers);
     console.log('Body (submit):', req.body);
     const { name, age, phone, city } = req.body;
@@ -35,21 +35,51 @@ app.post('/submit', upload.none(), (req, res) => {
         console.log('Ошибка: одно или несколько полей пустые', req.body);
         return res.status(400).json({ error: 'Все поля должны быть заполнены' });
     }
+    const phoneRegex = /^\+380[0-9]{9}$/;
+    if (!phoneRegex.test(phone)) {
+        console.log('Ошибка: Неверный формат телефона', req.body);
+        return res.status(400).json({ error: 'Неверный формат телефона. Используйте +380XXXXXXXXX.' });
+    }
     const message = `Новая заявка:\nИмя: ${name}\nВозраст: ${age}\nТелефон: ${phone}\nГород: ${city}`;
-    bot.sendMessage(chatId, message)
-        .then(() => res.status(200).json({ message: 'Заявка отправлена' }))
-        .catch((error) => {
-            console.error('Ошибка Telegram:', error);
-            res.status(500).json({ error: 'Ошибка сервера' });
-        });
+    try {
+        await bot.sendMessage(chatId, message);
+        res.status(200).json({ message: 'Заявка успешно отправлена!' });
+    } catch (error) {
+        console.error('Ошибка Telegram:', error);
+        res.status(500).json({ error: 'Ошибка сервера при отправке заявки.' });
+    }
 });
 
+// Форма обратного звонка
+app.post('/callback', upload.none(), async (req, res) => {
+    console.log('Headers:', req.headers);
+    console.log('Body (callback):', req.body);
+    const { name, phone } = req.body;
+    if (!name || !phone) {
+        console.log('Ошибка: поля имени или телефона пустые', req.body);
+        return res.status(400).json({ error: 'Поля имени и телефона должны быть заполнены' });
+    }
+    const phoneRegex = /^\+380[0-9]{9}$/;
+    if (!phoneRegex.test(phone)) {
+        console.log('Ошибка: Неверный формат телефона', req.body);
+        return res.status(400).json({ error: 'Неверный формат телефона. Используйте +380XXXXXXXXX.' });
+    }
+    const message = `Запрос на звонок:\nИмя: ${name}\nТелефон: ${phone}`;
+    try {
+        await bot.sendMessage(chatId, message);
+        res.status(200).json({ message: 'Запрос на звонок отправлен!' });
+    } catch (error) {
+        console.error('Ошибка Telegram:', error);
+        res.status(500).json({ error: 'Ошибка сервера при отправке запроса.' });
+    }
+});
 
 // Обработка несуществующих маршрутов
 app.use((req, res) => {
     res.status(404).json({ error: 'Маршрут не найден' });
 });
 
+// Запуск сервера
 app.listen(port, '0.0.0.0', () => {
     console.log(`Сервер запущен и слушает порт ${port}`);
 });
