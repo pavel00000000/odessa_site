@@ -6,24 +6,22 @@ const cors = require('cors');
 const multer = require('multer');
 
 dotenv.config();
-
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-// Настройка Telegram-бота
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: false });
 const chatId = process.env.CHAT_ID;
 
-// Настройка multer
-const upload = multer();
-
 // Middleware
-app.use(cors({
-    origin: 'http://127.0.0.1:5500'
-}));
+app.use(cors({ origin: 'https://odessa-site.onrender.com' })); // Указываем домен Render
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public'))); // Раздача статических файлов из папки public
+
+// Обработка корневого маршрута
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html')); // Явно отправляем index.html
+});
 
 // Обработка формы заявки
 app.post('/submit', upload.none(), (req, res) => {
