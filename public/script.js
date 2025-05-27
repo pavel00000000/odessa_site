@@ -46,11 +46,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Ошибка: Поле телефона обязательно для заполнения.');
                 return;
             }
+
+            // Очистка номера от пробелов, дефисов и других символов
+            const cleanedPhone = phone.replace(/[\s-]/g, '');
             const phoneRegex = /^\+380[0-9]{9}$/;
-            if (!phoneRegex.test(phone)) {
+            if (!phoneRegex.test(cleanedPhone)) {
                 alert('Ошибка: Неверный формат телефона. Используйте +380XXXXXXXXX.');
                 return;
             }
+
+            // Обновляем formData с очищенным номером
+            formData.set('phone', cleanedPhone);
 
             try {
                 const response = await fetch('/callback', {
@@ -105,11 +111,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Очистка номера от пробелов и дефисов
+            const cleanedPhone = formDataObj.phone.replace(/[\s-]/g, '');
             const phoneRegex = /^\+380[0-9]{9}$/;
-            if (!phoneRegex.test(formDataObj.phone)) {
+            if (!phoneRegex.test(cleanedPhone)) {
                 alert('Ошибка: Неверный формат телефона. Используйте +380XXXXXXXXX.');
                 return;
             }
+
+            // Обновляем formData с очищенным номером
+            formData.set('phone', cleanedPhone);
 
             try {
                 const response = await fetch('/submit', {

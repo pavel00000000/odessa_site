@@ -174,7 +174,8 @@
         </div>
     </div>
 
-  <!-- Модальное окно с формой обратного звонка -->
+ 
+<!-- Модальное окно с формой обратного звонка -->
 <div class="modal">
     <div class="modal-overlay"></div>
     <div class="modal-content">
@@ -183,7 +184,7 @@
         <p>Введите свои данные, и мы перезвоним в течение 30 минут</p>
         <form id="modal-form" action="/callback" method="POST">
             <input type="text" name="name" placeholder="Имя" required>
-            <input type="tel" name="phone" placeholder="Телефон +380" required pattern="\+380[0-9]{9}">
+            <input type="tel" name="phone" placeholder="Телефон +380" required>
             <button type="submit" class="btn">Отправить</button>
         </form>
     </div>

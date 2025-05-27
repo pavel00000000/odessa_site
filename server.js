@@ -48,10 +48,15 @@ app.post('/submit', upload.none(), (req, res) => {
 app.post('/callback', upload.none(), (req, res) => {
     console.log('Headers:', req.headers);
     console.log('Body (callback):', req.body);
-    const { name, phone } = req.body; // Учитываем поле name
+    const { name, phone } = req.body;
     if (!name || !phone) {
         console.log('Ошибка: поля имени или телефона пустые', req.body);
         return res.status(400).json({ error: 'Поля имени и телефона должны быть заполнены' });
+    }
+    const phoneRegex = /^\+380[0-9]{9}$/;
+    if (!phoneRegex.test(phone)) {
+        console.log('Ошибка: неверный формат телефона', req.body);
+        return res.status(400).json({ error: 'Неверный формат телефона. Используйте +380XXXXXXXXX.' });
     }
     const message = `Запрос на звонок:\nИмя: ${name}\nТелефон: ${phone}`;
     bot.sendMessage(chatId, message)
@@ -61,7 +66,6 @@ app.post('/callback', upload.none(), (req, res) => {
             res.status(500).json({ error: 'Ошибка сервера' });
         });
 });
-
 // Обработка несуществующих маршрутов
 app.use((req, res) => {
     res.status(404).json({ error: 'Маршрут не найден' });
