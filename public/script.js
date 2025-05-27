@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const response = await fetch('http://localhost:3000/callback', {
+                const response = await fetch('https://odessa-site.onrender.com', {
                     method: 'POST',
                     body: formData
                 });
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const response = await fetch('http://localhost:3000/submit', {
+                const response = await fetch('https://odessa-site.onrender.com', {
                     method: 'POST',
                     body: formData
                 });
