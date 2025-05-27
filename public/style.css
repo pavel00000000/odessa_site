@@ -60,7 +60,9 @@ header {
     height: 20px;
     position: relative;
     cursor: pointer;
+    left: -20%;
 }
+
 
 .burger-icon::before, .burger-icon::after, .burger-icon span {
     content: '';
