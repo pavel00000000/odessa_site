@@ -26,10 +26,16 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-
+// Маршрут для privacy.html
 app.get('/privacy.html', (req, res) => {
     console.log('GET /privacy.html requested');
     res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
+});
+
+// Редирект для /public/privacy.html
+app.get('/public/privacy.html', (req, res) => {
+    console.log('Redirecting /public/privacy.html to /privacy.html');
+    res.redirect('/privacy.html');
 });
 
 // Форма заявки
@@ -41,12 +47,13 @@ app.post('/submit', upload.none(), async (req, res) => {
         console.log('Ошибка: одно или несколько полей пустые', req.body);
         return res.status(400).json({ error: 'Все поля должны быть заполнены' });
     }
+    const cleanedPhone = phone.replace(/[\s()-]/g, '');
     const phoneRegex = /^\+380[0-9]{9}$/;
-    if (!phoneRegex.test(phone)) {
+    if (!phoneRegex.test(cleanedPhone)) {
         console.log('Ошибка: Неверный формат телефона', req.body);
         return res.status(400).json({ error: 'Неверный формат телефона. Используйте +380XXXXXXXXX.' });
     }
-    const message = `Новая заявка:\nИмя: ${name}\nВозраст: ${age}\nТелефон: ${phone}\nГород: ${city}`;
+    const message = `Новая заявка:\nИмя: ${name}\nВозраст: ${age}\nТелефон: ${cleanedPhone}\nГород: ${city}`;
     try {
         await bot.sendMessage(chatId, message);
         res.status(200).json({ message: 'Заявка успешно отправлена!' });
@@ -65,12 +72,13 @@ app.post('/callback', upload.none(), async (req, res) => {
         console.log('Ошибка: поля имени или телефона пустые', req.body);
         return res.status(400).json({ error: 'Поля имени и телефона должны быть заполнены' });
     }
+    const cleanedPhone = phone.replace(/[\s()-]/g, '');
     const phoneRegex = /^\+380[0-9]{9}$/;
-    if (!phoneRegex.test(phone)) {
+    if (!phoneRegex.test(cleanedPhone)) {
         console.log('Ошибка: Неверный формат телефона', req.body);
         return res.status(400).json({ error: 'Неверный формат телефона. Используйте +380XXXXXXXXX.' });
     }
-    const message = `Запрос на звонок:\nИмя: ${name}\nТелефон: ${phone}`;
+    const message = `Запрос на звонок:\nИмя: ${name}\nТелефон: ${cleanedPhone}`;
     try {
         await bot.sendMessage(chatId, message);
         res.status(200).json({ message: 'Запрос на звонок отправлен!' });
