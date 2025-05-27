@@ -147,6 +147,31 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+    // Анимация карточек при прокрутке
+    const advantageItems = document.querySelectorAll('.advantage-item');
+    const observerOptions = {
+        root: null,
+        threshold: 0.2, // Запуск, когда 20% карточки видно
+        rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const item = entry.target;
+                const index = item.style.getPropertyValue('--index') || 0;
+                item.classList.add('visible');
+                item.style.transitionDelay = `${index * 0.2}s`; // Задержка по --index
+                observer.unobserve(item); // Отключаем наблюдение после анимации
+            }
+        });
+    }, observerOptions);
+
+    advantageItems.forEach(item => {
+        observer.observe(item);
+    });
+
+
 function toggleModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.classList.toggle('active');
