@@ -58,7 +58,8 @@ app.post('/callback', upload.none(), (req, res) => {
         console.log('Ошибка: неверный формат телефона', req.body);
         return res.status(400).json({ error: 'Неверный формат телефона. Используйте +380XXXXXXXXX.' });
     }
-    const message = `Запрос на звонок:\nИмя: ${name}\nТелефон: ${phone}`;
+    const message = `Запрос на звонок
+    :\nИмя: ${name}\nТелефон: ${phone}`;
     bot.sendMessage(chatId, message)
         .then(() => res.status(200).json({ message: 'Запрос отправлен' }))
         .catch((error) => {
