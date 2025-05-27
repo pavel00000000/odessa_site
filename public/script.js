@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const callIcon = document.querySelector('.call-icon');
-    const modalOverlay = document.querySelector('.modal-overlay');
-    const modalContent = document.querySelector('.modal-content');
+    const modalOverlay = document.querySelector('#callback-modal .modal-overlay');
+    const modalContent = document.querySelector('#callback-modal .modal-content');
     const modalForm = document.getElementById('modal-form');
     const modalInputs = document.querySelectorAll('#modal-form input');
 
@@ -17,15 +17,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Обработка клика по overlay для закрытия модального окна
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', toggleModal);
-    }
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', () => {
+            const modal = overlay.closest('.modal');
+            toggleModal(modal.id);
+        });
+    });
 
-    // Предотвращение закрытия при клике внутри .modal-content
-    if (modalContent) {
-        modalContent.addEventListener('click', (e) => {
+    // Предотвращаем закрытие при клике внутри .modal-content
+    document.querySelectorAll('.modal-content').forEach(content => {
+        content.addEventListener('click', (e) => {
             e.stopPropagation();
         });
+    });
+
+    // Функция для показа сообщения в модальном окне
+    function showMessage(type, title, text) {
+        const modal = document.getElementById('message-modal');
+        const titleElement = modal.querySelector('.message-title');
+        const textElement = modal.querySelector('.message-text');
+
+        titleElement.textContent = title;
+        textElement.textContent = text;
+        titleElement.className = `message-title ${type}`; // success или error
+
+        modal.classList.add('active');
     }
 
     // Обработка формы обратного звонка
@@ -39,23 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
             // Валидация полей
             const { name, phone } = formDataObj;
             if (!name) {
-                alert('Ошибка: Поле имени обязательно для заполнения.');
+                showMessage('error', 'Ошибка', 'Поле имени обязательно для заполнения.');
                 return;
             }
             if (!phone) {
-                alert('Ошибка: Поле телефона обязательно для заполнения.');
+                showMessage('error', 'Ошибка', 'Поле телефона обязательно для заполнения.');
                 return;
             }
 
-            // Очистка номера от пробелов, дефисов и других символов
+            // Очистка номера от пробелов и дефисов
             const cleanedPhone = phone.replace(/[\s-]/g, '');
             const phoneRegex = /^\+380[0-9]{9}$/;
             if (!phoneRegex.test(cleanedPhone)) {
-                alert('Ошибка: Неверный формат телефона. Используйте +380XXXXXXXXX.');
+                showMessage('error', 'Ошибка', 'Неверный формат телефона. Используйте +380XXXXXXXXX.');
                 return;
             }
 
-            // Обновляем formData с очищенным номером
             formData.set('phone', cleanedPhone);
 
             try {
@@ -67,27 +82,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Ответ сервера (modal-form):', result);
 
                 if (response.ok) {
-                    alert(result.message || 'Запрос на звонок отправлен!');
+                    showMessage('success', 'Успех!', result.message || 'Запрос на звонок получен!');
                     modalForm.reset();
-                    toggleModal();
+                    toggleModal('callback-modal');
                 } else {
-                    alert(result.error || 'Ошибка при отправке запроса.');
-                    console.error('Ошибка сервера:', result);
+                    showMessage('error', 'Ошибка', result.error || 'Ошибка при отправке запроса.');
                 }
             } catch (error) {
-                alert('Ошибка сети. Проверьте соединение.');
-                console.error('Ошибка сети:', error);
+                showMessage('error', 'Ошибка сети', 'Не удалось подключиться к серверу. Проверьте соединение.');
+                console.error('Ошибка:', error);
             }
         });
 
-        // Предотвращение закрытия при фокусе на полях ввода
+        // Предотвращаем закрытие при клике на поля
         modalInputs.forEach(input => {
-            input.addEventListener('focus', (e) => {
-                e.stopPropagation();
-            });
-            input.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
+            input.addEventListener('focus', e => e.stopPropagation());
+            input.addEventListener('click', e => e.stopPropagation());
         });
     }
 
@@ -102,24 +112,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const age = parseInt(formDataObj.age);
             if (!age || isNaN(age) || age < 16 || age > 100) {
-                alert('Ошибка: Возраст должен быть числом от 16 до 100.');
+                showMessage('error', 'Ошибка', 'Возраст должен быть числом от 16 до 50.');
                 return;
             }
 
             if (!formDataObj.name || !formDataObj.phone || !formDataObj.city || !formDataObj.age) {
-                alert('Ошибка: Все поля обязательны для заполнения.');
+                showMessage('error', 'Ошибка', 'Все поля обязательны для заполнения.');
                 return;
             }
 
-            // Очистка номера от пробелов и дефисов
             const cleanedPhone = formDataObj.phone.replace(/[\s-]/g, '');
             const phoneRegex = /^\+380[0-9]{9}$/;
             if (!phoneRegex.test(cleanedPhone)) {
-                alert('Ошибка: Неверный формат телефона. Используйте +380XXXXXXXXX.');
+                showMessage('error', 'Ошибка', 'Неверный формат телефона. Используйте +380XXXXXXXXX.');
                 return;
             }
 
-            // Обновляем formData с очищенным номером
             formData.set('phone', cleanedPhone);
 
             try {
@@ -131,20 +139,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Ответ сервера (contact-form):', result);
 
                 if (response.ok) {
-                    alert(result.message || 'Заявка успешно отправлена!');
+                    showMessage('success', 'Успех!', 'Заявка успешно отправлена!');
                     contactForm.reset();
                 } else {
-                    alert(result.error || 'Ошибка при отправке заявки.');
-                    console.error('Ошибка сервера:', result);
+                    showMessage('error', 'Ошибка', result.error || 'Ошибка при отправке заявки.');
                 }
             } catch (error) {
-                alert('Ошибка сети. Проверьте соединение.');
-                console.error('Ошибка сети:', error);
+                showMessage('error', 'Ошибка сети', 'Не удалось подключиться к серверу. Проверьте соединение.');
+                console.error('Ошибка:', error);
             }
         });
     }
 });
 
-function toggleModal() {
-    document.body.classList.toggle('modal-open');
+// Управление модальными окнами
+function toggleModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.toggle('active');
 }
