@@ -38,13 +38,14 @@ h1, h2, h3 {
 header {
     position: fixed;
     top: 0;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.2);
+    width: calc(100%); 
+    background: rgba(13, 236, 225, 0.229);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
     z-index: 1000;
+    box-sizing: border-box; /* Убедимся, что padding не увеличивает ширину */
 }
 
 .logo img {
@@ -115,12 +116,24 @@ nav a {
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
+    max-width: 180px; /* Увеличено для вмещения иконок */
+    flex-shrink: 0; /* Предотвращаем сжатие */
+}
+
+.social-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap; /* Убрано wrap, чтобы иконки оставались в строке */
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden; /* Скрываем переполнение */
 }
 
 .social-icons img {
-    height: 50px;
-    margin-left: 0.5rem;
+    height: 35px; /* Ещё уменьшена высота для компактности */
+    margin: 0;
     transition: transform 0.3s;
 }
 
@@ -198,8 +211,7 @@ nav a {
 
 .poseidon-trigger {
     display: none;
-}    
-
+}
 
 .poseidon-animation {
     position: fixed;
@@ -243,7 +255,7 @@ nav a {
 }
 
 .about-container {
-    background:rgba(13, 236, 225, 0.6) url('img/sand.jpg') repeat;
+    background: rgba(13, 236, 225, 0.6) url('img/sand.jpg') repeat;
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(4px);
     padding: 2rem;
@@ -313,7 +325,6 @@ nav a {
     transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease, rotate 0.4s ease;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     background: linear-gradient(135deg, rgba(13, 236, 225, 0.6), rgba(0, 123, 255, 0.4));
@@ -626,8 +637,17 @@ footer p, footer a {
     .social-icons {
         margin-top: 1rem;
         display: flex;
-        gap: 1rem;
+        gap: 0.5rem; /* Уменьшен gap для мобильной версии */
         justify-content: center;
+        flex-wrap: wrap; /* Разрешить перенос иконок */
+        max-width: 200px; /* Ограничить ширину в бургер-меню */
+        padding: 0 1rem; /* Добавить внутренние отступы */
+        box-sizing: border-box;
+    }
+
+    .social-icons img {
+        height: 35px; /* Ещё меньший размер иконок для мобильной версии */
+        margin: 0;
     }
 
     .about-content {
