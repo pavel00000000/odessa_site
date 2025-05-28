@@ -12,17 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
             callIcon.style.display = 'flex';
         });
     });
+
     // Скролл к форме после анимации
-document.getElementById('poseidon-trigger').addEventListener('change', (e) => {
-    if (e.target.checked) {
-        // Ждём 4 секунды (длительность анимации poseidonFade)
-        setTimeout(() => {
-            document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
-            // Сбрасываем checkbox, чтобы анимация могла запуститься снова
-            e.target.checked = false;
-        }, 2200);
-    }
-});
+    document.getElementById('poseidon-trigger').addEventListener('change', (e) => {
+        if (e.target.checked) {
+            // Ждём 4 секунды (длительность анимации poseidonFade)
+            setTimeout(() => {
+                document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+                // Сбрасываем checkbox, чтобы анимация могла запуститься снова
+                e.target.checked = false;
+            }, 2200);
+        }
+    });
 
     // Закрытие модальных окон по overlay
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
@@ -145,7 +146,7 @@ document.getElementById('poseidon-trigger').addEventListener('change', (e) => {
                 console.log('Ответ сервера (contact-form):', result);
 
                 if (response.ok) {
-                    showMessage('success', 'Успех!', result.message || 'Заявка отправлена!');
+                    showSuccessAnimation();
                     contactForm.reset();
                 } else {
                     showMessage('error', 'Ошибка', result.error || 'Ошибка отправки заявки.');
@@ -158,30 +159,29 @@ document.getElementById('poseidon-trigger').addEventListener('change', (e) => {
     }
 });
 
-    // Анимация карточек при прокрутке
-    const advantageItems = document.querySelectorAll('.advantage-item');
-    const observerOptions = {
-        root: null,
-        threshold: 0.2, // Запуск, когда 20% карточки видно
-        rootMargin: '0px'
-    };
+// Анимация карточек при прокрутке
+const advantageItems = document.querySelectorAll('.advantage-item');
+const observerOptions = {
+    root: null,
+    threshold: 0.2, // Запуск, когда 20% карточки видно
+    rootMargin: '0px'
+};
 
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const item = entry.target;
-                const index = item.style.getPropertyValue('--index') || 0;
-                item.classList.add('visible');
-                item.style.transitionDelay = `${index * 0.2}s`; // Задержка по --index
-                observer.unobserve(item); // Отключаем наблюдение после анимации
-            }
-        });
-    }, observerOptions);
-
-    advantageItems.forEach(item => {
-        observer.observe(item);
+const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const item = entry.target;
+            const index = item.style.getPropertyValue('--index') || 0;
+            item.classList.add('visible');
+            item.style.transitionDelay = `${index * 0.2}s`; // Задержка по --index
+            observer.unobserve(item); // Отключаем наблюдение после анимации
+        }
     });
+}, observerOptions);
 
+advantageItems.forEach(item => {
+    observer.observe(item);
+});
 
 function toggleModal(modalId) {
     const modal = document.getElementById(modalId);
