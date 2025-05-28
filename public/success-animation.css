@@ -10,7 +10,12 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.success-anim-container[style*="display: flex"] {
+    opacity: 1;
 }
 
 .success-anim-container img {
@@ -30,10 +35,10 @@
 /* Адаптация для мобильных устройств */
 @media (max-width: 768px) {
     .success-anim-container img {
-        width: 150px;
+        width: 300px;
     }
 
     .success-anim-container p {
-        font-size: 18px;
+        font-size: 36px;
     }
 }
