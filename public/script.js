@@ -12,6 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
             callIcon.style.display = 'flex';
         });
     });
+    // Скролл к форме после анимации
+document.getElementById('poseidon-trigger').addEventListener('change', (e) => {
+    if (e.target.checked) {
+        // Ждём 4 секунды (длительность анимации poseidonFade)
+        setTimeout(() => {
+            document.querySelector('#contact').scrollIntoView({ behavior: 'smooth' });
+            // Сбрасываем checkbox, чтобы анимация могла запуститься снова
+            e.target.checked = false;
+        }, 2200);
+    }
+});
 
     // Закрытие модальных окон по overlay
     document.querySelectorAll('.modal-overlay').forEach(overlay => {

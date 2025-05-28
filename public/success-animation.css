@@ -1,0 +1,23 @@
+.success-anim-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
+    display: none;
+}
+
+.success-anim-container img {
+    width: 200px;
+    height: auto;
+}
+
+.success-anim-container p {
+    color: #fff;
+    font-size: 24px;
+    margin-top: 10px;
+}

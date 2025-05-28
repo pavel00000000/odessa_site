@@ -23,7 +23,7 @@ h1, h2, h3 {
 }
 
 .preloader {
-    background: #003366;
+    background: #307bc7;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -198,7 +198,8 @@ nav a {
 
 .poseidon-trigger {
     display: none;
-}
+}    
+
 
 .poseidon-animation {
     position: fixed;
@@ -226,7 +227,7 @@ nav a {
 .poseidon-trigger:checked ~ .poseidon-animation {
     opacity: 1;
     visibility: visible;
-    animation: poseidonFade 4s ease-in-out forwards;
+    animation: poseidonFade 2.2s ease-in-out forwards;
 }
 
 @keyframes poseidonFade {
