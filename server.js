@@ -14,7 +14,7 @@ const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: false });
 const chatId = process.env.CHAT_ID;
 
 // Middleware
-app.use(cors({ origin: 'https://odessa-site.onrender.com' }));
+app.use(cors({ origin: 'https://work.odessa.ua' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
