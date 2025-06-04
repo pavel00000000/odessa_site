@@ -10,6 +10,10 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Проверка переменных окружения
+console.log('BOT_TOKEN:', process.env.BOT_TOKEN ? 'Loaded' : 'Not loaded');
+console.log('CHAT_ID:', process.env.CHAT_ID ? 'Loaded' : 'Not loaded');
+
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: false });
 const chatId = process.env.CHAT_ID;
 
@@ -56,9 +60,10 @@ app.post('/submit', upload.none(), async (req, res) => {
     const message = `Новая заявка:\nИмя: ${name}\nВозраст: ${age}\nТелефон: ${cleanedPhone}\nГород: ${city}`;
     try {
         await bot.sendMessage(chatId, message);
+        console.log('Сообщение успешно отправлено в Telegram (submit)');
         res.status(200).json({ message: 'Заявка успешно отправлена!' });
     } catch (error) {
-        console.error('Ошибка Telegram:', error);
+        console.error('Ошибка Telegram (submit):', error.response?.body || error.message);
         res.status(500).json({ error: 'Ошибка сервера при отправке заявки.' });
     }
 });
@@ -81,9 +86,10 @@ app.post('/callback', upload.none(), async (req, res) => {
     const message = `Запрос на звонок:\nИмя: ${name}\nТелефон: ${cleanedPhone}`;
     try {
         await bot.sendMessage(chatId, message);
+        console.log('Сообщение успешно отправлено в Telegram (callback)');
         res.status(200).json({ message: 'Запрос на звонок отправлен!' });
     } catch (error) {
-        console.error('Ошибка Telegram:', error);
+        console.error('Ошибка Telegram (callback):', error.response?.body || error.message);
         res.status(500).json({ error: 'Ошибка сервера при отправке запроса.' });
     }
 });

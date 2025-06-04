@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.set('phone', cleanedPhone);
 
             try {
-                const response = await fetch('/callback', {
+                const response = await fetch('https://work.odessa.ua/callback', {
                     method: 'POST',
                     body: formData
                 });
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.set('phone', cleanedPhone);
 
             try {
-                const response = await fetch('/submit', {
+                const response = await fetch('https://work.odessa.ua/submit', {
                     method: 'POST',
                     body: formData
                 });
