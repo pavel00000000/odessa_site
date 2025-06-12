@@ -1,3 +1,8 @@
+
+document.addEventListener('DOMContentLoaded', () => {
+    AOS.init(); // Инициализация AOS
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const callIcon = document.querySelector('.call-icon');
     const modalInputs = document.querySelectorAll('#modal-form input');

@@ -1,3 +1,8 @@
+
+document.addEventListener('DOMContentLoaded', () => {
+    AOS.init(); // Инициализация AOS
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     const languageSwitch = document.getElementById('language-switch');
     let currentLanguage = 'ru'; // Изначально русский язык
