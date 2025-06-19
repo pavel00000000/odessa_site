@@ -183,19 +183,21 @@
         </div>
     </section>
 
-    <!-- Форма заявки -->
-    <section id="contact" class="contact">
-        <div class="contact-container">
-            <h2>Оставить заявку</h2>
-            <form id="contact-form" action="/submit" method="POST">
-                <input type="text" name="name" placeholder="Имя" required>
-                <input type="number" name="age" placeholder="Возраст" required>
-                <input type="tel" name="phone" placeholder="Телефон +380" required>
-                <input type="text" name="city" placeholder="Город" required>
-                <button type="submit" class="btn">Отправить заявку</button>
-            </form>
-        </div>
-    </section>
+   <!-- Форма заявки -->
+<section id="contact" class="contact">
+    <div class="contact-container">
+        <h2>Оставить заявку</h2>
+        <form id="contact-form" action="/submit" method="POST">
+            <input type="text" name="name" placeholder="Имя" required>
+            <input type="number" name="age" placeholder="Возраст" min="16" max="35" required>
+            <input type="tel" name="phone" placeholder="Телефон +380" required>
+            <input type="text" name="city" placeholder="Город" required>
+            <button type="submit" class="btn">Отправить заявку</button>
+        </form>
+        <p>*Для кандидатов 16–35 лет</p>
+    </div>
+</section>
+
 
     <!-- Модальное окно для обратного звонка -->
     <div class="modal" id="callback-modal">
