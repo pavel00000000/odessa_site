@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     AOS.init(); // Инициализация AOS
 });
@@ -95,6 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     showMessage('success', 'Успех!', result.message || 'Запрос на звонок отправлен!');
+
+                    gtag('event', 'conversion', {
+                        'send_to': 'AW-17161319113/W_yyCL7WpdQaEMnlk_c_',
+                        'value': 1.0,
+                        'currency': 'UAH'
+                    });
+
                     modalForm.reset();
                     toggleModal('callback-modal');
                 } else {
@@ -152,6 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     showSuccessAnimation();
+
+                    gtag('event', 'conversion', {
+                        'send_to': 'AW-17161319113/W_yyCL7WpdQaEMnlk_c_',
+                        'value': 1.0,
+                        'currency': 'UAH'
+                    });
+
                     contactForm.reset();
                 } else {
                     showMessage('error', 'Ошибка', result.error || 'Ошибка отправки заявки.');
